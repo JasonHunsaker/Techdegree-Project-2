@@ -6,9 +6,10 @@ FSJS Project 2 - Data Pagination and Filtering
 // variables to refrence HTML elements
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
+const header = document.querySelector('.header')
 /*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
+This function will create and insert/append the elements needed to display a "page" of nine students.  It pulls the information from the data.js file to display various bits of info
+for each student.  it is set up to loop through the data.js & add the corresponding HTML elements.
 */
 function showPage(list, page) {
   const indexStart = (page * 9) - 9;
@@ -32,8 +33,8 @@ function showPage(list, page) {
 };
     
 /*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
+This function will create and insert/append the elements needed for the pagination buttons.  The function is set up to show 9 students per page & auto calculate how many pages 
+would be needed if the data.js file had students added/removed. 
 */
 function addPagination(list) {
  let numOfPages = Math.ceil(list.length / 9);
@@ -54,12 +55,50 @@ function addPagination(list) {
    }
 };
 
-
-
-
-
-
 // Call functions
-showPage(data, 1)
-addPagination(data)
+showPage(data, 1);
+addPagination(data);
 
+/*
+Exceeds Expectations attempt - search function - The search function will allow a user to begin typing a name & have that information filtered out of the full list
+*/
+//add search HTML
+let insertSearch = `<label for="search" class="student-search">
+            <input id="search" placeholder="Search by name...">
+            <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+          </label>`;
+header.insertAdjacentHTML("beforeend", insertSearch);
+
+// variables for search function
+let searchInput = document.querySelector("#search")
+let searchButton = document.querySelector("#button")
+//search function
+function studentSearch() {
+   let userInput = searchInput.value.toUpperCase();
+   let searchArray = [];
+   if (userInput.value !== ''){
+      for(i = 0; i<data.length; i++) {
+         let firstName = data[i].name.first.toUpperCase();
+         let lastName = data[i].name.last.toUpperCase();
+
+         if (firstName.includes(userInput) || lastName.includes(userInput)){
+            searchArray.push(data[i]);
+         }
+      }
+      showPage(searchArray, 1);
+      addPagination(searchArray);
+   } else {
+      showPage(data, 1);
+      addPagination(data);
+   }
+   
+};
+
+//realtime filter of data
+searchInput.addEventListener('keyup', (e) => {
+   studentSearch();
+});
+//prevet page reload if clicked insead
+searchButton.addEventListener('click', (e) => {
+   e.preventDefault();
+});
