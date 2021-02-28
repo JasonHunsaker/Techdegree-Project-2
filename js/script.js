@@ -65,15 +65,16 @@ Exceeds Expectations attempt - search function - The search function will allow 
 //add search HTML
 let insertSearch = `<label for="search" class="student-search">
             <input id="search" placeholder="Search by name...">
-            <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+            <button id="submit" type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
           </label>`;
 header.insertAdjacentHTML("beforeend", insertSearch);
 
 //HTML for no students displayed
-let noStudents = `<strong>Sorry, no students match with that information</strong>`
+let noStudents = `<h1><strong>Sorry, no students match with that information</strong></h1>`
 
 // variables for search function
 let searchInput = document.querySelector("#search")
+let searchButton = document.querySelector("#submit")
 //search function
 function studentSearch() {
    let userInput = searchInput.value.toUpperCase();
@@ -85,20 +86,25 @@ function studentSearch() {
 
          if (firstName.includes(userInput) || lastName.includes(userInput)){
             searchArray.push(data[i]);
-         } else if (!firstName.includes(userInput) || !lastName.includes(userInput)){
-            studentList.insertAdjacentHTML("beforeend", noStudents)
-         }
+         } 
       }
-      showPage(searchArray, 1);
+            showPage(searchArray, 1);
       addPagination(searchArray);
    } else {
       showPage(data, 1);
       addPagination(data);
    } 
-   
+   if (searchArray.length === 0){
+      studentList.innerHTML = noStudents;
+      linkList.innerHTML = '';
+   }
 };
 
 //realtime filter of data
 searchInput.addEventListener('keyup', (e) => {
+   studentSearch();
+});
+
+searchButton.addEventListener('click', (e) => {
    studentSearch();
 });
