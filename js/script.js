@@ -69,9 +69,11 @@ let insertSearch = `<label for="search" class="student-search">
           </label>`;
 header.insertAdjacentHTML("beforeend", insertSearch);
 
+//HTML for no students displayed
+let noStudents = `<strong>Sorry, no students match with that information</strong>`
+
 // variables for search function
 let searchInput = document.querySelector("#search")
-let searchButton = document.querySelector("#button")
 //search function
 function studentSearch() {
    let userInput = searchInput.value.toUpperCase();
@@ -83,6 +85,8 @@ function studentSearch() {
 
          if (firstName.includes(userInput) || lastName.includes(userInput)){
             searchArray.push(data[i]);
+         } else if (!firstName.includes(userInput) || !lastName.includes(userInput)){
+            studentList.insertAdjacentHTML("beforeend", noStudents)
          }
       }
       showPage(searchArray, 1);
@@ -90,15 +94,11 @@ function studentSearch() {
    } else {
       showPage(data, 1);
       addPagination(data);
-   }
+   } 
    
 };
 
 //realtime filter of data
 searchInput.addEventListener('keyup', (e) => {
    studentSearch();
-});
-//prevet page reload if clicked insead
-searchButton.addEventListener('click', (e) => {
-   e.preventDefault();
 });
