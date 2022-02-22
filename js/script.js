@@ -12,10 +12,10 @@ This function will create and insert/append the elements needed to display a "pa
 for each student.  it is set up to loop through the data.js & add the corresponding HTML elements.
 */
 function showPage(list, page) {
-  const indexStart = (page * 9) - 9;
-  const indexEnd = page * 9; 
-  studentList.innerHTML = '';
-   for(let i = 0; i < list.length; i++) {
+   const indexStart = (page * 9) - 9;
+   const indexEnd = page * 9;
+   studentList.innerHTML = '';
+   for (let i = 0; i < list.length; i++) {
       if (i >= indexStart && i < indexEnd) {
          let studentInfo = `<li class="student-item cf">
          <div class="student-details">
@@ -27,7 +27,7 @@ function showPage(list, page) {
            <span class="date">Date joined ${list[i].registered.date}</span>
          </div>
        </li>`;
-       studentList.insertAdjacentHTML("beforeend", studentInfo);
+         studentList.insertAdjacentHTML("beforeend", studentInfo);
       }
    };
 };
@@ -37,21 +37,21 @@ This function will create and insert/append the elements needed for the paginati
 would be needed if the data.js file had students added/removed. 
 */
 function addPagination(list) {
- let numOfPages = Math.ceil(list.length / 9);
- linkList.innerHTML = ''
-   for(let i = 1; i <= numOfPages; i++) {
-        let button = `<li>
+   let numOfPages = Math.ceil(list.length / 9);
+   linkList.innerHTML = ''
+   for (let i = 1; i <= numOfPages; i++) {
+      let button = `<li>
            <button type="button">${i}</button>
         </li>`;
-     linkList.insertAdjacentHTML("beforeend", button);
-     document.querySelector('BUTTON').classList.add('active');
-     linkList.addEventListener('click', (e) => {
-        if(e.target.tagName === "BUTTON") {
-           document.querySelector('.active').className = '';
-           e.target.classList.add('active');
-           showPage(list, e.target.textContent)
-        }
-     });
+      linkList.insertAdjacentHTML("beforeend", button);
+      document.querySelector('BUTTON').classList.add('active');
+      linkList.addEventListener('click', (e) => {
+         if (e.target.tagName === "BUTTON") {
+            document.querySelector('.active').className = '';
+            e.target.classList.add('active');
+            showPage(list, e.target.textContent)
+         }
+      });
    }
 };
 
@@ -79,22 +79,22 @@ let searchButton = document.querySelector("#submit")
 function studentSearch() {
    let userInput = searchInput.value.toUpperCase();
    let searchArray = [];
-   if (userInput.value !== ''){
-      for(i = 0; i<data.length; i++) {
+   if (userInput.value !== '') {
+      for (i = 0; i < data.length; i++) {
          let firstName = data[i].name.first.toUpperCase();
          let lastName = data[i].name.last.toUpperCase();
 
-         if (firstName.includes(userInput) || lastName.includes(userInput)){
+         if (firstName.includes(userInput) || lastName.includes(userInput)) {
             searchArray.push(data[i]);
-         } 
+         }
       }
-            showPage(searchArray, 1);
+      showPage(searchArray, 1);
       addPagination(searchArray);
    } else {
       showPage(data, 1);
       addPagination(data);
-   } 
-   if (searchArray.length === 0){
+   }
+   if (searchArray.length === 0) {
       studentList.innerHTML = noStudents;
       linkList.innerHTML = '';
    }
